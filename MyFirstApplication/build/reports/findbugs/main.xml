@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1" sequence="0" timestamp="1529664663333" analysisTimestamp="1529664663351" release="">
+  <Project projectName="">
+    <Jar>/home/norlock/Projects/developmentTools/MyFirstApplication/build/classes/java/main</Jar>
+    <SrcDir>/home/norlock/Projects/developmentTools/MyFirstApplication/src/main/java/MyFirstApplication.java</SrcDir>
+  </Project>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE">
+    <Class classname="MyFirstApplication">
+      <SourceLine classname="MyFirstApplication" start="4" end="38" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+    </Class>
+    <Method classname="MyFirstApplication" name="main" signature="([Ljava/lang/String;)V" isStatic="true">
+      <SourceLine classname="MyFirstApplication" start="9" end="11" startBytecode="0" endBytecode="4" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+    </Method>
+    <LocalVariable name="result" register="1" pc="8" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="MyFirstApplication" start="10" end="10" startBytecode="7" endBytecode="7" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.BASE_VALUE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="result"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="RV_RETURN_VALUE_IGNORED" priority="1" rank="3" abbrev="RV" category="CORRECTNESS">
+    <Class classname="MyFirstApplication">
+      <SourceLine classname="MyFirstApplication" start="4" end="38" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+    </Class>
+    <Method classname="MyFirstApplication" name="congratulateUser" signature="()V" isStatic="true">
+      <SourceLine classname="MyFirstApplication" start="17" end="19" startBytecode="0" endBytecode="47" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="trim" signature="()Ljava/lang/String;" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="2868" end="2878" startBytecode="0" endBytecode="152" sourcefile="String.java" sourcepath="java/lang/String.java"/>
+    </Method>
+    <SourceLine classname="MyFirstApplication" start="17" end="17" startBytecode="3" endBytecode="3" sourcefile="MyFirstApplication.java" sourcepath="MyFirstApplication.java"/>
+  </BugInstance>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Fri, 22 Jun 2018 12:51:03 +0200" total_classes="1" referenced_classes="12" total_bugs="2" total_size="18" num_packages="1" java_version="1.8.0_172" vm_version="25.172-b11" cpu_seconds="3.63" clock_seconds="1.03" peak_mbytes="108.17" alloc_mbytes="1755.00" gc_seconds="0.03" priority_2="1" priority_1="1">
+    <PackageStats package="" total_bugs="2" total_types="1" total_size="18" priority_2="1" priority_1="1">
+      <ClassStats class="MyFirstApplication" sourceFile="MyFirstApplication.java" interface="false" size="18" bugs="2" priority_2="1" priority_1="1"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="230" invocations="329" avgMicrosecondsPerInvocation="700" maxMicrosecondsPerInvocation="22396" standardDeviationMircosecondsPerInvocation="2001"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="52" invocations="12" avgMicrosecondsPerInvocation="4398" maxMicrosecondsPerInvocation="18152" standardDeviationMircosecondsPerInvocation="5557"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="46" invocations="330" avgMicrosecondsPerInvocation="141" maxMicrosecondsPerInvocation="2871" standardDeviationMircosecondsPerInvocation="172"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="41" invocations="64" avgMicrosecondsPerInvocation="649" maxMicrosecondsPerInvocation="4306" standardDeviationMircosecondsPerInvocation="730"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="38" invocations="295" avgMicrosecondsPerInvocation="131" maxMicrosecondsPerInvocation="1397" standardDeviationMircosecondsPerInvocation="217"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="29" invocations="12" avgMicrosecondsPerInvocation="2452" maxMicrosecondsPerInvocation="11228" standardDeviationMircosecondsPerInvocation="3118"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="29" invocations="6" avgMicrosecondsPerInvocation="4873" maxMicrosecondsPerInvocation="28168" standardDeviationMircosecondsPerInvocation="10418"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="28" invocations="27" avgMicrosecondsPerInvocation="1065" maxMicrosecondsPerInvocation="16066" standardDeviationMircosecondsPerInvocation="3050"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="22" invocations="12" avgMicrosecondsPerInvocation="1848" maxMicrosecondsPerInvocation="9028" standardDeviationMircosecondsPerInvocation="2463"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.OverridingEqualsNotSymmetrical" totalMilliseconds="18" invocations="12" avgMicrosecondsPerInvocation="1557" maxMicrosecondsPerInvocation="9866" standardDeviationMircosecondsPerInvocation="2682"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FunctionsThatMightBeMistakenForProcedures" totalMilliseconds="18" invocations="12" avgMicrosecondsPerInvocation="1525" maxMicrosecondsPerInvocation="6716" standardDeviationMircosecondsPerInvocation="2062"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BuildObligationPolicyDatabase" totalMilliseconds="15" invocations="12" avgMicrosecondsPerInvocation="1331" maxMicrosecondsPerInvocation="5414" standardDeviationMircosecondsPerInvocation="1633"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

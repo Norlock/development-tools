@@ -33,7 +33,7 @@
 		margin-left: 2px;
 		margin-bottom: 0;
 	}
-	
+
 	.log {
 		margin-top: 0;
 	}
@@ -41,7 +41,6 @@
 	.el_method {
 		pointer-events: none;
 	}
-
 </style>
 
 <span id="title">Development Tools</span>
@@ -56,8 +55,6 @@ alt="main image"/>
 **Gemaakt door:** Joris Willems<br>
 **Studentnummer:** 349672<br>
 **Datum:** 10-6-2018<br>
-
----
 
 # Inhoudsopgave
 
@@ -150,18 +147,18 @@ Dit commando zal de volgende bestanden en folders aanmaken.
 |-- (5) gradlew.bat
 |-- (6) settings.gradle
 `-- src
-    |-- main
-    |   `-- java
-    |       `-- App.java
-    `-- test
-        `-- java
-            `-- AppTest.java
+|-- main
+|   `-- java
+|       `-- App.java
+`-- test
+`-- java
+`-- AppTest.java
 ```
 
 1. Project configuratie script om de taken, plugins, afhankelijkheden, etc, te configureren voor het project. 
 2. Wrapper uitvoerbaar .jar bestand. De wrapper is een script die automatisch de juiste gradle versie installeert en
-   gebruikt. Voordeel hiervan is dat iedereen die aan dit project werkt dezelfde wrapper versie gebruikt, hierdoor
-   verminder je inconsistenties tussen ontwikkelaars.
+gebruikt. Voordeel hiervan is dat iedereen die aan dit project werkt dezelfde wrapper versie gebruikt, hierdoor
+verminder je inconsistenties tussen ontwikkelaars.
 3. Wrapper configuratie bestand voor Gradle.
 4. Gradle wrapper script for Unix-based systemen.
 5. Gradle wrapper script for windows.
@@ -222,63 +219,63 @@ Maven. Hieronder een voorbeeld van een Maven configuratie bestand (pom.xml):
 
 ```maven 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.programming.mitra</groupId>
-    <artifactId>java-build-tools</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0</version>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.12.1</version>
-				<executions>
-					<execution>
-						<configuration>
-							<configLocation>config/checkstyle/checkstyle.xml</configLocation>
-							<consoleOutput>true</consoleOutput>
-							<failsOnError>true</failsOnError>
-						</configuration>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-        </plugins>
-    </build>
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.programming.mitra</groupId>
+<artifactId>java-build-tools</artifactId>
+<packaging>jar</packaging>
+<version>1.0</version>
+<dependencies>
+<dependency>
+<groupId>junit</groupId>
+<artifactId>junit</artifactId>
+<version>4.11</version>
+</dependency>
+</dependencies>
+<build>
+<plugins>
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-checkstyle-plugin</artifactId>
+<version>2.12.1</version>
+<executions>
+<execution>
+<configuration>
+<configLocation>config/checkstyle/checkstyle.xml</configLocation>
+<consoleOutput>true</consoleOutput>
+<failsOnError>true</failsOnError>
+</configuration>
+<goals>
+<goal>check</goal>
+</goals>
+</execution>
+</executions>
+</plugin>
+<plugin>
+<groupId>org.codehaus.mojo</groupId>
+<artifactId>findbugs-maven-plugin</artifactId>
+<version>2.5.4</version>
+<executions>
+<execution>
+<goals>
+<goal>check</goal>
+</goals>
+</execution>
+</executions>
+</plugin>
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-pmd-plugin</artifactId>
+<version>3.1</version>
+<executions>
+<execution>
+<goals>
+<goal>check</goal>
+</goals>
+</execution>
+</executions>
+</plugin>
+</plugins>
+</build>
 </project>
 ```
 
@@ -299,11 +296,11 @@ apply plugin:'pmd'
 version ='1.0'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    testCompile group:'junit', name:'junit', version:'4.11'
+	testCompile group:'junit', name:'junit', version:'4.11'
 }
 ```
 
@@ -337,23 +334,23 @@ hetzelfde als de build.gradle voor Gradle. Hieronder een voorbeeld van een relat
 
 ```json
 {
-  "name": "webpack-demo",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.8"
-  },
-  "dependencies": {
-    "lodash": "^4.17.10"
-  }
+	"name": "webpack-demo",
+	"version": "1.0.0",
+	"description": "",
+	"private": true,
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"webpack": "^4.12.0",
+		"webpack-cli": "^3.0.8"
+	},
+	"dependencies": {
+		"lodash": "^4.17.10"
+	}
 }
 ```
 
@@ -361,7 +358,7 @@ npm heeft de mogelijkheid om de scope van een pakket te bepalen, zo kunnen bijvo
 volgende vlaggen worden meegegeven bij het installeren van een pakket: 
 * npm install --save-dev webpack (installeert het pakket als een development dependency en wordt niet meegenomen in een build)
 * npm install --global webpack (installeert het pakket globaal op de machine en zal dus niet binnen het project opgeslagen
-  worden)
+		worden)
 * npm install --save webpack (installeert het pakket en voegt deze dependency toe aan het package.json bestand)
 * npm install webpack (installeert het pakket tijdelijk maar zal bij een volgende install niet meer worden meegenomen)
 
@@ -391,7 +388,7 @@ meerdere voordelen:
 * Uglify (code slechter leesbaar maken voor de buitenwereld).
 
 Webpack kan via npm geinstalleerd worden als een development dependency, webpack kan gebruikt worden d.m.v. NPX (Node
-package runner). NPX is een tool van npm om binaries te kunnen runnen. Om webpack te start moet het volgende commando
+		package runner). NPX is een tool van npm om binaries te kunnen runnen. Om webpack te start moet het volgende commando
 uitgevoerd worden `npx webpack`. Deze zal de source code bundelen en een bestand main.js genereren in de
 dist(distribution) folder. 
 
@@ -403,17 +400,17 @@ webpack.config.js bestand.
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist')
-  }
+entry: './src/index.js',
+   output: {
+filename: 'main.js',
+	  path: path.resolve(__dirname, 'dist')
+   }
 };
 ```
 
 De entry is het JavaScript bestand die gebruikt wordt om de applicatie te starten. Het output blok gaat over de
 configuratie van de bundle, (welke locatie dient dit bestand naartoe geschreven te worden, hoe moet dit bestand
-genoemd worden, etc.). Het commando 'npx webpack' zal dit bestand automatisch herkennen. In de development wereld worden
+		genoemd worden, etc.). Het commando 'npx webpack' zal dit bestand automatisch herkennen. In de development wereld worden
 deze commando's vaak als npm scripts toegevoegd in de package.json om de commando's voor andere ontwikkelaars zo
 duidelijk mogelijk te maken.
 
@@ -422,8 +419,8 @@ duidelijk mogelijk te maken.
 ```gradle
 ...
 "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-	"build": "webpack"
+	"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "webpack"
 },
 ...
 ```
@@ -438,7 +435,7 @@ nieuwe build te genereren. In het scripts blok hoeft npx niet ervoor te staan, d
 Er zijn verschillende tools beschikbaar om de code kwaliteit te kunnen analyseren. Drie tools worden verder in dit hoofdstuk toegelicht:
 * **Checkstyle:** een tool die wordt gebruikt om te kunnen vaststellen of bepaalde code conventies worden nageleeft.
 * **FindBugs:** herkennen van veel voorkomende bugs in code, probeert ook bugs te herkennen die niet door de compiler worden
-  afgevangen
+afgevangen
 * **JaCoCo:** het berekenen van hoeveel (procent) van de code wordt afgedekt door unit tests.
 
 ## 2.1 Checkstyle <a name="checkstyle"></a>
@@ -450,8 +447,8 @@ worden vastgelegd binnen een xml bestand.
 
 ```xml
 <module name="LineLength">
-            <property name="max" value="100"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+<property name="max" value="100"/>
+<property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
 </module>
 ```
 
@@ -475,51 +472,51 @@ rules gebruikt:
 
 <h3 id="error-report">File /home/norlock/Projects/developmentTools/MyFirstApplication/src/main/java/MyFirstApplication.java</h3>
 <table class="log" width="100%" cellspacing="2" cellpadding="5" border="0">
-	<tbody><tr>
-		<th>Error Description</th><th>Line</th>
-	</tr>
-	<tr class="a">
-		<td>Missing package-info.java file.</td><td>0</td>
-	</tr>
-	<tr class="b">
-		<td>Missing a Javadoc comment.</td><td>1</td>
-	</tr>
-	<tr class="a">
-		<td>Utility classes should not have a public or default constructor.</td><td>1</td>
-	</tr>
-	<tr class="b">
-		<td>Missing a Javadoc comment.</td><td>3</td>
-	</tr>
-	<tr class="a">
-		<td>Parameter args should be final.</td><td>3</td>
-	</tr>
-	<tr class="b">
-		<td>File contains tab characters (this is the first instance).</td><td>4</td>
-	</tr>
-	<tr class="a">
-		<td>Line is longer than 80 characters (found 98).</td><td>12</td>
-	</tr>
-	<tr class="b">
-		<td>First sentence should end with a period.</td><td>15</td>
-	</tr>
-	<tr class="a">
-		<td>Line is longer than 80 characters (found 90).</td><td>16</td>
-	</tr>
-	<tr class="b">
-		<td>Line is longer than 80 characters (found 89).</td><td>21</td>
-	</tr>
-	<tr class="a">
-		<td>Parameter argument1 should be final.</td><td>21</td>
-	</tr>
-	<tr class="b">
-		<td>Parameter argument2 should be final.</td><td>21</td>
-	</tr>
-	<tr class="a">
-		<td>Line is longer than 80 characters (found 85).</td><td>26</td>
-	</tr>
-	<tr class="b">
-		<td>Parameter argument should be final.</td><td>31</td>
-	</tr>
+<tbody><tr>
+<th>Error Description</th><th>Line</th>
+</tr>
+<tr class="a">
+<td>Missing package-info.java file.</td><td>0</td>
+</tr>
+<tr class="b">
+<td>Missing a Javadoc comment.</td><td>1</td>
+</tr>
+<tr class="a">
+<td>Utility classes should not have a public or default constructor.</td><td>1</td>
+</tr>
+<tr class="b">
+<td>Missing a Javadoc comment.</td><td>3</td>
+</tr>
+<tr class="a">
+<td>Parameter args should be final.</td><td>3</td>
+</tr>
+<tr class="b">
+<td>File contains tab characters (this is the first instance).</td><td>4</td>
+</tr>
+<tr class="a">
+<td>Line is longer than 80 characters (found 98).</td><td>12</td>
+</tr>
+<tr class="b">
+<td>First sentence should end with a period.</td><td>15</td>
+</tr>
+<tr class="a">
+<td>Line is longer than 80 characters (found 90).</td><td>16</td>
+</tr>
+<tr class="b">
+<td>Line is longer than 80 characters (found 89).</td><td>21</td>
+</tr>
+<tr class="a">
+<td>Parameter argument1 should be final.</td><td>21</td>
+</tr>
+<tr class="b">
+<td>Parameter argument2 should be final.</td><td>21</td>
+</tr>
+<tr class="a">
+<td>Line is longer than 80 characters (found 85).</td><td>26</td>
+</tr>
+<tr class="b">
+<td>Parameter argument should be final.</td><td>31</td>
+</tr>
 </tbody></table>
 
 Hierin wordt het bijvoorbeel duidelijk dat er variabelen zijn die niet final zijn, maar dat de afspraak is dat deze dat wel zijn.
@@ -553,12 +550,12 @@ gradle check
 In de code kan bijvoorbeeld de volgende Bug zijn geschreven die niet door de compiler of IDE wordt herkend:
 
 ```java
-	private static String notTrimmed = " This string won't be trimmed ";
+private static String notTrimmed = " This string won't be trimmed ";
 
-	public static void congratulateUser() {
-		notTrimmed.trim();
-		...	
-	}
+public static void congratulateUser() {
+	notTrimmed.trim();
+	...	
+}
 ```
 
 Op dit moment zal de code werken omdat de ontwikkelaar geen _foute_ code heeft geschreven. FindBugs herkent dit wel als
@@ -567,7 +564,7 @@ gebruikt. FindBugs geeft de details van de bug weer zoals in het voorbeeld hiero
 
 >The return value of this method should be checked. One common cause of this warning is to invoke a method on an immutable object, thinking that it updates the object. For example, in the following code fragment,
 >```
->	String dateString = getHeaderField(name);
+	>	String dateString = getHeaderField(name);
 >	dateString.trim();
 >```
 >the programmer seems to be thinking that the trim() method will update the String referenced by dateString. But since Strings are immutable, the trim() function returns a new String value, which is being ignored here. The code should be corrected to:
@@ -593,11 +590,11 @@ toe te voegen aan het build.gradle bestand:
 
 ```
 jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("$buildDir/reports/jacoco/main")
-    }
+	reports {
+		xml.enabled false
+			csv.enabled false
+			html.destination file("$buildDir/reports/jacoco/main")
+	}
 }
 ```
 
@@ -697,8 +694,6 @@ kantoortijden snel gealarmeerd worden wanneer er problemen plaatsvinden.
 De kracht van Jenkins is de eenvoud in het toevoegen van plugins, zo kunnen tools als FindBugs en Checkstyle makkelijk
 toegevoegd worden. Zo kan met bijvoorbeeld een android plugin een simulator worden opgestart bij elke nieuwe build. 
 
-
-
 # 4. DTAP <a name="dtap"></a>
 
 
@@ -707,3 +702,4 @@ toegevoegd worden. Zo kan met bijvoorbeeld een android plugin een simulator word
 
 https://codeship.com/continuous-integration-essentials
 https://stackoverflow.com/questions/1306579/buildr-gradle-or-wait-for-maven-3
+

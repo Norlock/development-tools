@@ -70,6 +70,7 @@ alt="main image"/>
 3. [Continuous integration](#integration)
 	1. [Jenkings](#jenkings)
 4. [DTAP](#dtap)
+5. [JMeter](#jmeter)
 
 ---
 
@@ -655,7 +656,7 @@ met eigen tools kunnen worden geanalyseerd.
 
 # 3. Continuous Integration <a name="ci"></a>
 
-Continuous integration is een ontwikkelingsproces waarbij ontwikkelaars vaak code integreren naar een gedeelde
+Continuous integration of CI, is een ontwikkelingsproces waarbij ontwikkelaars vaak code integreren naar een gedeelde
 repository. Elke integratie zal door een automatische wasstraat van development tools en tests gaan. Dit zorgt ervoor
 dat code aan een bepaalde minimum norm moet voldoen om geaccepteerd te worden. Zo kan bijvoorbeeld een vereiste zijn dat
 code dat niet gebuild kan worden automatisch niet wordt geaccepteerd door de master en development branch. 
@@ -667,7 +668,6 @@ uit te voeren als de code al niet gecompileerd kan worden. Er zijn tools die hel
 hanteren. In dit hoofdstuk zal Jenkins als continuous integration tool verder worden onderzocht.
 
 ## 3.1 Jenkins <a name="jenkins"></a>
-
 Jenkins is een continuous integration tool dat op een server draait en afhankelijk is van een versiebeheer systeem zoals
 Git of SVN. Jenkins kan gedownload worden als een war bestand een binary voor Java, of als een prepackaged
 binary (voor bijvoorbeeld Ubuntu). Vervolgens kan deze war via de java-cli gestart worden met commando: `java -jar
@@ -694,12 +694,555 @@ kantoortijden snel gealarmeerd worden wanneer er problemen plaatsvinden.
 De kracht van Jenkins is de eenvoud in het toevoegen van plugins, zo kunnen tools als FindBugs en Checkstyle makkelijk
 toegevoegd worden. Zo kan met bijvoorbeeld een android plugin een simulator worden opgestart bij elke nieuwe build. 
 
+## 3.2 Server omgeving <a name="server-environment"></a>
+
+Jenkins draait op een server, om Jenkins in te kunnen stellen moeten ontwikkelaars hier makkelijk bij kunnen. Developers
+maken hierdoor vaak gebruik van SSH (**S**ecure **SH**ell), een tool die zowel UNIX systemen als op Windows systemen kan
+draaien. SSH is gemaakt zodat een systeem van afstand bestuurbaar is. Deze tool maakt gebruik van cryptografie om ervoor
+te zorgen dat er geen gevoelige informatie gelekt kan worden warneer deze via het internet vervoert wordt. De standaard
+poort voor SSH is 22, maar kan veranderd worden. Automatisch is deze poort geblokkeerd om ongewenste bezoekers tegen
+te gaan.
+
+Een andere programma dat vaak gebruikt wordt in combinatie met Jenkins is Docker. Docker is een programma dat op
+besturings niveau virtualizatie toepast, dit staat beter bekend als containers applicaties. Docker draait containers,
+een container kan heeft zijn eigen build tools, bibliotheken en configuratie bestanden. Deze containers maken gebruik
+van dezelfde OS laag, dit maakt ze veel lichter en sneller dan virtuele machines (Virtual Box) die een complete OS laag
+emuleren.
+
+De reden dat Jenkins goed met Docker samenwerkt is dat containers makkelijk terug gezet kan worden. Dit wordt duidelijk
+aan de hand van het volgende scenario:
+
+**Niet gebruikmakend van Docker**
+1. De server wordt geupdate en nieuwe package worden geinstalleerd.
+2. Ergens gaat er iets mis met 1 van de server tools of configuraties
+3. De server is down en moet de packages downgraden.
+	1. Deze packages hebben allemaal dependencies meegenomen die ook gedowngrade moeten worden
+
+Dit process is gevoelig voor fouten en kan het systeem instabiel maken als de package manager niet alle packages juist terugzet.
+
+**Gebruikmakend van Docker**
+1. De server wordt geupdate en installeert een nieuwe container versie
+	* Deze container is als geheel getest.
+	* Containers zijn veel kleiner qua geheugen.
+2. Er gaat toch iets mis met de server.  
+3. De vorige container wordt terug gezet.
+	* Het is vrijwel garant dat deze versie hetzelfde werkt als voorheen. Iets wat met upgraden en downgraden van
+	  individuele packages niet altijd het geval is.
+
 # 4. DTAP <a name="dtap"></a>
+DTAP wat staat voor: **D**evelopment **T**esting **A**cceptance **P**roduction, is een afkorting die gebruikt wordt
+binnen het software testen en deployen domein. Jenkins en andere CI tools gelden als een soort bewaker voor deze
+principes. Als software development team wil je deze termen praktiseren. Development tools zoals FindBugs en Checkstyle
+kunnen helpen bij development. Unit testing die via Jenkins pipelines wordt geautomatiseerd samen met andere test
+tools helpen om de betrouwbaarheid van de code te verhogen. Acceptance is de laatste stap voor productie en wordt er
+gekeken of wat opgelevert gaat worden voldoet aan de eisen. Bij veel bedrijven hebben ze bijvoorbeeld een testing/pre
+release branch waar code een bepaalde periode op bevroren blijft (op uitzondering van bugfixes). Developers gebruiken
+deze branch en zijn handmatig aan kijken of alle features bijvoorbeeld doen wat ze moeten doen. Alhoewel deze branches
+soms test branches heten zijn ze niet per see ongetest (al CI tests zijn al uitgevoerd). Wanneer na een bepaalde tijd
+alles naar behoren lijkt te werken kan de klant akkoord het beoordelen en akkoord geven. Waarna het na de productie fase
+gaat.
 
+# 5. Apache JMeter <a name="jmeter"></a>
+## 5.1 Introductie <a name="introduction"></a>
+JMeter is een tool om prestaties te meten van verscheidene diensten, maar werd voornamelijk gebruikt voor web
+applicaties of ftp applicaties. Tegenwoordig wordt het ook gebruikt voor functionele tests en database server tests.
+JMeter is ontwikkeld door Stefano Mazzocchi, een medewerker van de Apache software Foundation, en is open source. JMeter
+heeft de volgende functionaliteiten:
+* Testen van allerlei verschillende applicaties/servers/protocollen:
+	* Web - HTTP, HTTP, HTTPS (Java, NodeJS, PHP, ASP.NET, ...).
+	* SOAP en REST webservices
+	* Etc...
+* Een complete IDE die het mogelijk maakt om een test plan op te stellen en deze te bouwen/debuggen/opnemen.
+* Command line modus om bijvoorbeeld te testen op headless servers.
+* Een HTML rapport zoals (sommige) tools/plugins die via Gradle worden geinstalleerd.
+* Testen met verschillende threats (hoe reageert je server als twee functies tegelijk worden aangeroepen?).
+* Caching and offline test resultaten analyseren en herspelen.
+* Een verscheidenheid aan plugins om bijvoorbeeld data te kunnen analyseren.
+* Kan makkelijk geintegreerd worden via third party open source bibliotheken zoals Maven, Gradle of Jenkins.
 
+JMeter is niet een tool die gebruikt wordt om browser functionaliteit te testen. Dit houdt in dat JMeter niet test hoe
+snel een HTML pagina wordt geladen en het voert geen JavaScript functionaliteiten uit. 
+
+## 5.2 Onderzoek <a name="research"></a>
+Om JMeter te testen wordt er een simpele NodeJS server opgezet die verschillende functies gaat uitvoeren. De volgende
+eigenschappen worden onderzocht:
+* Wat zijn de resultaten van aanroepen onder lage lading.
+* Wat zijn de resultaten van aanroepen onder zware lading.
+* Reageert de server onder aanroepen die queries uitvoeren of een database.
+
+## 5.3 Test Server <a name="server"></a>
+De server wordt opgezet in NodeJS. Express is een package die via NPM eenvoudig geinstalleerd kan worden en kan helpen
+om makkelijk calls toe te voegen en te configureren. Om verschillen te kunnen meten met JMeter zijn de volgende calls
+opgestelt:
+
+### 5.3.1 Berekent wat eenvoudige sommen.
+
+```JavaScript
+app.get('/calculations', (req, res) => {
+	response = "";
+	for(let i = 0; i < 100; i++) {
+		let randomCalc = Math.random() * 8 * 26;
+		response += 'Berekening: ' + randomCalc + '<br>'; 
+	}
+	res.send(response)  
+})
+```
+
+### 5.3.2 Deze call verstuurd een JSON array. 
+Deze call zal de server zwaarder belasten dan het eerste voorbeeld. Aangezien het moeilijk is om een complexe server te
+simuleren zal de array groter gemaakt kunnen worden.
+
+```JavaScript
+app.get('/json', (req, res) => {
+	res.setHeader('Content-Type', 'application/json')
+	array = [];
+	for(let i = 0; i < 150; i++) {
+		array[i] = simpleJSON;
+	}
+	res.send(array)  
+})
+
+var simpleJSON = {
+	name: "Bob",
+	age: 25,
+	subjects: [
+		'history',
+		'geography',
+		'math',
+		'sports'
+	],
+	hobbies: [
+		{
+
+			languages: [
+				'French',
+				'Chinese',
+				'German'
+			],
+			sports: ['fishing', 'tennis'],
+			books: [
+				{
+					name: 'Harry Potter and the philosopher stone',
+					author: 'J.K. Rowling',
+					series: 'Harry Potter',
+					publicationData: [
+						{
+							date: '26-06-1997',
+							country: 'UK'
+						},
+						{
+							date: '01-09-1998',
+							country: 'US'
+						}
+					]
+				}
+			]
+		}
+	]
+}
+```
+
+### 5.3.3 Queries op database. 
+Er worden twee aanroepen benaderd die queries gaan uitvoeren op de database. Een query gaat informatie uit de database
+halen en een andere gaat informatie toevoegen aan de database. Deze aanroepen zullen straks simultaan lopen bij de
+stress testen, waardoor er waarschijnlijk fouten gaan optreden. Deze Maria database bevat een tabel met informatie over
+boeken en een tabel met informatie over de schrijvers. Er is een aanroep die een boek gaat toevoegen en een aanroep die de
+boeken gaat ophalen.
+
+| BookID | BookName                                 | AuthorID | BookPrice | BookLastUpdated     | BookIsAvailable |
+|--------|------------------------------------------|----------|-----------|---------------------|-----------------|
+|      1 | And Then There Were None                 |        1 |     14.95 | 2018-08-31 10:45:02 |               1 |
+|      2 | The Man in the Brown Suit                |        1 |     23.99 | 2018-08-31 10:45:02 |               1 |
+|      3 | The Stand                                |        2 |     35.99 | 2018-08-31 10:45:02 |               1 |
+|      5 | The Green Mile                           |        2 |     29.99 | 2018-08-31 10:45:02 |               1 |
+|      6 | The Alchemist                            |        3 |     25.00 | 2018-08-31 10:45:02 |               1 |
+|      8 | Harry Potter and the Philosopher's Stone |        4 |     36.71 | 2018-08-31 10:58:56 |               1 |
+|      9 | Een vlucht regenwulpen                   |        5 |     15.00 | 2018-08-31 10:59:20 |               1 |
+
+Hierboven een voorbeeld van het resultaat van de aanroep dat boeken ophaalt. BookID is de primaire sleutel en wordt
+automatisch opgehoogt. Verder wordt er via de crypto bibliotheek van NodeJS een willekeurige string gegenereerd voor de
+boeknaam (de data in dit voorbeeld is handmatig ingesteld). Cryptografie is een onderdeel wat altijd veel rekenkracht
+kost waardoor de server eerder overbalast kan raken.
+
+```JavaScript
+app.get('/database', (req, res) => {
+	res.setHeader('Content-Type', 'application/json')
+	let bookName = crypto.randomBytes(40).toString('hex');
+	let price = Math.random() * 35;
+	connection.query("INSERT INTO BooksTBL (BookName, AuthorID, BookPrice, BookIsAvailable) VALUES ('" + bookName + "', 5," 
+			+ price + ", 1);", function (error, results, fields) {
+		if (error) throw error;
+		books = results;
+		res.send(results)  
+	});
+})
+
+app.get('/database', (req, res) => {
+	res.setHeader('Content-Type', 'application/json')
+	array = [];
+	for(let i = 0; i < 100; i++) {
+		array[i] = simpleJSON;
+	}
+	res.send(array)  
+})
+```
+
+## 5.4 Opstartgids JMeter.
+JMeter kan zowel via command line als via GUI. Voor dit onderzoek wordt eerst via de GUI een testplan opgesteld, daarna
+zal er gekeken worden hoe dit via een command line geimplementeerd kan worden. Voor JMeter gaan de volgende tests
+uitgevoerd worden:
+
+**Performance tests** <br>
+Deze tests kijken naar de snelheid van de server onder goede omstandigheden. De server wordt niet zwaar belast.
+
+**Load tests** <br>
+Deze tests moeten achterhalen hoe de server reageerd onder zware lading. Uit deze tests kan worden afgeleid of bepaalde calls veel in
+prestatie verminderen (en waarom dat gebeurd).
+
+**Stress tests** <br>
+Deze tests zijn bedoeld om de server te crashen. Door heel veel requests uit te voeren kunnen we erachter komen hoeveel
+requests de server aan kan.  
+
+![JMeter GUI](./resources/jmeter-screen.png)
+
+## 5.5 Performance tests.
+1. **Toevoegen van Thread Groups.** <br>
+De JMeter GUI bevat twee menu's, de linker menu is om acties aan het test plan toe te voegen. Het rechter menu is om
+deze acties te configureren en de resultaten worden hier ook weergegeven. Om initieel de server te testen wordt er een
+"Thread Group" toegevoegd. Deze thread group start de threads die aanroepen gaan doen op server. 
+
+2. **Toevoegen van een HTTP request.** <br>
+Voor performance tests worden de aanroepen apart getest. Deze HTTP request zullen eerst de 'calculations' pad testen.
+Vervolgens de 'json' en 'database' pad. Voor deze aanroepen kunnen er parameters worden meegegeven.
+
+3. **Toevoegen van resultaten.** <br>
+Om de resultaten goed te kunnen analyseren worden er drie acties toegevoegd:
+	1. View results tree. Deze actie geeft feedback over de individuele aanroepen, een developer kan inzien welke
+	   aanroepen er bijvoorbeeld gecrashed zijn en op welk tijdstip.
+	2. Summary report. Deze actie geeft een samenvatting van de resultaten: hoeveel samples zijn er genomen? Hoe veel
+	   data is er ontvangen? Hoeveel procent is er gefaald? De tabellen hieronder maken gebruik van deze actie.
+	3. Graph results. Deze actie geeft de resultaten weer in een grafiek over een horizontale tijdsas.
+
+### 5.5.1 Resultaten performance tests.
+**Threads:** 5 <br>
+**Duur:** 5 seconden <br>
+**Aantal:** 5 maal <br>
+
+**Simpele berekeningen** <br>
+Dit tabel hieronder is omgezet vanuit een CSV bestand. JMeter kan de resultaten in CSV of XML formaat opslaan. Deze
+resultaten kunnen via allerlei tools weer omgezet worden in bijvoorbeeld HTML zoals hieronder te zien is.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">25</td>
+<td align="right">2</td>
+<td>1</td>
+<td align="right">7</td>
+<td align="right">1.96</td>
+<td>0.000%</td>
+<td align="right">6.23286</td>
+<td align="right">21.64</td>
+<td align="right">0.79</td>
+<td align="right">3554.9</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">25</td>
+<td align="right">2</td>
+<td>1</td>
+<td align="right">7</td>
+<td align="right">1.96</td>
+<td>0.000%</td>
+<td align="right">6.23286</td>
+<td align="right">21.64</td>
+<td align="right">0.79</td>
+<td align="right">3554.9</td>
+</tr>
+</tbody></table>
+
+De resultaten van simpele berekeningen voldoen aan de hypothese. Deze aanroep duurt maximaal 7 milliseconden deze test. 
+
+**JSON aanroep** <br> 
+Dezelfde acties is nu uitgevoerd op een JSON aanroep. Ik verwacht dat deze aanroep meer tijd nodig heeft dan de vorige
+maar dat de resultaten niet veel verschillen.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">25</td>
+<td align="right">8</td>
+<td>1</td>
+<td align="right">17</td>
+<td align="right">3.93</td>
+<td>0.000%</td>
+<td align="right">6.17284</td>
+<td align="right">329.55</td>
+<td align="right">0.74</td>
+<td align="right">54668.0</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">25</td>
+<td align="right">8</td>
+<td>1</td>
+<td align="right">17</td>
+<td align="right">3.93</td>
+<td>0.000%</td>
+<td align="right">6.17284</td>
+<td align="right">329.55</td>
+<td align="right">0.74</td>
+<td align="right">54668.0</td>
+</tr>
+</tbody></table>
+
+Zelfs met arrays wordt er niet veel tijd verloren, Uiteindelijk kost een aanroep maximaal 17 ms. Dat het minimaal 1
+milliseconden duurt kan met caching van NodeJS te maken hebben.
+
+**Database** <br>
+De insert aanroep wordt gebruikt om te kijken hoe lang deze aanroep ongeveer duurt.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">25</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">14</td>
+<td align="right">3.18</td>
+<td>0.000%</td>
+<td align="right">6.16067</td>
+<td align="right">2.05</td>
+<td align="right">0.80</td>
+<td align="right">341.0</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">25</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">14</td>
+<td align="right">3.18</td>
+<td>0.000%</td>
+<td align="right">6.16067</td>
+<td align="right">2.05</td>
+<td align="right">0.80</td>
+<td align="right">341.0</td>
+</tr>
+</tbody></table>
+
+Deze aan roep is minder zwaar dan de vorige, maar dat heeft grotendeels ook te maken met kwantiteit. De vorige aanroep
+genereerde een array met 150 objecten, deze aanroep voegt maar 1 object toe aan de database.
+
+## 5.6 Resultaten load tests
+**Threads:** 100 <br>
+**Duur:** 10 seconden <br>
+**Aantal:** 50 maal <br>
+
+**Simpele berekeningen** <br>
+Simpele berkeningen zijn nu wat in tijd toegenomen. Van max 7 naar max 21, maar er zijn nog geen abnormale resultaten te
+herkennen. Dit is opzich ook logisch aangezien deze aanroep vrij simplistisch is.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">5000</td>
+<td>1</td>
+<td>0</td>
+<td align="right">21</td>
+<td align="right">1.12</td>
+<td>0.000%</td>
+<td align="right">496.96849</td>
+<td align="right">1725.09</td>
+<td align="right">63.09</td>
+<td align="right">3554.5</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">5000</td>
+<td>1</td>
+<td>0</td>
+<td align="right">21</td>
+<td align="right">1.12</td>
+<td>0.000%</td>
+<td align="right">496.96849</td>
+<td align="right">1725.09</td>
+<td align="right">63.09</td>
+<td align="right">3554.5</td>
+</tr>
+</tbody></table>
+
+**JSON aanroep** <br> 
+Dezelfde acties worden nu uitgevoerd op een JSON aanroep. Ik verwacht dat deze aanroep veel meer gaat verschillen t.o.v.
+de vorige aanroep.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">5000</td>
+<td>1</td>
+<td>0</td>
+<td align="right">13</td>
+<td align="right">0.92</td>
+<td>0.000%</td>
+<td align="right">497.66099</td>
+<td align="right">26568.49</td>
+<td align="right">59.29</td>
+<td align="right">54668.0</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">5000</td>
+<td>1</td>
+<td>0</td>
+<td align="right">13</td>
+<td align="right">0.92</td>
+<td>0.000%</td>
+<td align="right">497.66099</td>
+<td align="right">26568.49</td>
+<td align="right">59.29</td>
+<td align="right">54668.0</td>
+</tr>
+</tbody></table>
+
+Uiteindelijk zijn de resultaten gelijk gebleven. Dit kan te maken hebben met het feit dat er niks wordt uitgerekend.
+Wanneer deze test niet op localhost zou worden uitgevoerd zal wel duidelijk worden dat de totale tijd hoger is, maar de
+HTTP tijd gelijk blijft.
+
+**Database queries** <br>
+Om de database iets zwaarder te belasten worden de twee queries: opvragen van boeken, toevoegen van boek tegelijk
+aangeroepen. Mijn hypothese is dat deze iets zwaarder zou zijn dan de prestatie test, maar uiteindelijk niet veel zal
+schelen.
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">Label</th>
+<th title="Field #2">Samples</th>
+<th title="Field #3">Average</th>
+<th title="Field #4">Min</th>
+<th title="Field #5">Max</th>
+<th title="Field #6">Std. Dev.</th>
+<th title="Field #7">Error %</th>
+<th title="Field #8">Throughput</th>
+<th title="Field #9">Received KB/sec</th>
+<th title="Field #10">Sent KB/sec</th>
+<th title="Field #11">Avg. Bytes</th>
+</tr></thead>
+<tbody><tr>
+<td>HTTP Request</td>
+<td align="right">10000</td>
+<td align="right">683</td>
+<td>1</td>
+<td align="right">1212</td>
+<td align="right">344.46</td>
+<td>0.000%</td>
+<td align="right">107.56274</td>
+<td align="right">27224.44</td>
+<td align="right">13.81</td>
+<td align="right">259177.4</td>
+</tr>
+<tr>
+<td>TOTAL</td>
+<td align="right">10000</td>
+<td align="right">683</td>
+<td>1</td>
+<td align="right">1212</td>
+<td align="right">344.46</td>
+<td>0.000%</td>
+<td align="right">107.56274</td>
+<td align="right">27224.44</td>
+<td align="right">13.81</td>
+<td align="right">259177.4</td>
+</tr>
+</tbody></table>
+
+De server kreeg het al vrij vroeg lastig, waardoor de tijden omhoog sprongen. Uiteindelijk is geen aanroep gecrashed, dit kan opgemaakt worden uit de results
+tree. 
+
+![grap](./resources/graph.png)
+
+De rode lijnen op deze screenshot geven de deviatie weer. Bij elke andere aanroep hiervoor trad er geen deviatie op,
+deze test die als load test had moeten dienen is dus eigenlijk een stress test geweest. Om te bepalen waar de grens ligt
+zal de ontwikkelaar de test omlaag schalen totdat de deviatie weer op 0 komt te staan. In het begin loopt de groene
+lijn op, dit is te vergelijken met de resultaten van het begin van een DDOS aanval.
+
+## 5.6 Resultaten stress tests
+**Threads:** 1000 <br>
+**Duur:** 10 seconden <br>
+**Aantal:** 5 maal <br>
+
+De stress tests gaan alleen uitgevoerd worden op de database aanroepen. Deze tests onder zware lading zorgden voor veel
+probelemen bij database aanroepen, t.o.v. de andere aanroepen die bijna geen verschil toonde t.ov. hun vorige tests. 
+
+Na het uitvoeren van deze test heb ik de server handmatig gekilled. Mijn systeem begon traag te worden, de server begon
+out of memory exceptions te gooien. Helaas heb ik daardoor niet de resultaten kunnen analyseren, dit heeft te
+maken met het feit dat deze server op localhost draait. Wanneer de server extern zal draaien kunnen deze testen beter
+worden uitgevoerd.
+
+## 5.7 Conclusie
+JMeter bied alle opties 
 
 # Bronnen
 
 https://codeship.com/continuous-integration-essentials
 https://stackoverflow.com/questions/1306579/buildr-gradle-or-wait-for-maven-3
-
+https://jmeter.apache.org/

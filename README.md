@@ -56,6 +56,8 @@ alt="main image"/>
 **Studentnummer:** 349672<br>
 **Datum:** 10-6-2018<br>
 
+------
+
 # Inhoudsopgave
 
 1. [Build systemen](#build-systemen)
@@ -67,28 +69,36 @@ alt="main image"/>
 	1. [Checkstyle](#checkstyle)
 	2. [FindBugs](#findbugs)
 	3. [JaCoCo](#jacoco)
-3. [Continuous integration](#integration)
-	1. [Jenkings](#jenkings)
+3. [Continuous integration](#ci)
+	1. [Jenkins](#jenkins)
 4. [DTAP](#dtap)
 5. [JMeter](#jmeter)
-
+	1. [Introductie](#introduction)
+	2. [Onderzoek](#research)
+	3. [Opzet test server](#server)
+	4. [Opstartgids JMeter](#startup)
+	5. [Performance tests](#performance)
+	6. [Load tests](#load)
+	7. [Stress tests](#stress)
+	8. [Conclusie](#conclusion)
+6. [Bronnen](#sources)
 ---
 
 # 1. Build systemen <a name="build-systemen"></a>
 
-Build systemen zijn gereedschappen die gebruikt worden voor afhankelijkheden beheer en om projecten te kunnen builden,
-runnen, testen, beheren, etc. De reden waarom build systemen zoals Gradle/Maven worden gebruikt zal duidelijk worden door
-te kijken hoe projecten handmatig gebuild, gerund en beheerd moeten worden. Een Java compiler kan direct vanaf de
-command line bestanden compileren en runnen. Om een bestand te compileren kan het volgende commando vanaf de
-command line worden gebruikt:
+Build systemen zijn tools die gebruikt worden voor een verscheidenheid van redenen, bijvoorbeeld management
+dependencies, of eenvoudig kunnen builden, runnen en testen van projecten. De reden waarom build systemen zoals
+Gradle/Maven worden gebruikt voor Java zal duidelijk worden door te kijken hoe projecten handmatig gebuild, gerund en beheerd
+moeten worden. Een Java compiler kan vanaf de command line bestanden compileren en runnen. Om een bestand te
+compileren moet het volgende commando vanaf de command line worden gebruikt:
 
 ```sh
 javac MyFirstApplication.java
 ```
 
-Op dit moment wordt het bestand gecompileerd naar een binary en krijgt het een .class extensie. Op
-dit moment bestaan er twee bestanden de .java file en het .class bestand. Het .java bestand wordt gebruikt voor ontwikkeling en het
-.class bestand wordt gebruikt om het project te runnen. Om het project te runnen moet het volgende commando ingetypt worden
+Op dit moment wordt het bestand gecompileerd naar een binary en krijgt het gecompileerde bestand een .class extensie. Op
+dit moment bestaan er twee bestanden de .java bestand en het .class bestand. Het .java bestand wordt gebruikt voor ontwikkeling en het
+.class bestand wordt gebruikt om het project te runnen. Om het project te runnen dient het volgende commando ingetypt te worden
 vanaf de command line:
 
 ```sh
@@ -96,8 +106,8 @@ java MyFirstApplication.class
 ```
 
 Voor ontwikkeling is het beter om de binaries en ontwikkelings bestanden te scheiden. De binaries zijn voor de
-ontwikkelaar uiteindelijk niet van belang. Daarvoor worden er vaak door IDEs of build systemen twee folders aangemaakt
-bij het creëren van een nieuw project: out en src. Src (of app) wordt gebruikt voor de ontwikkeling, de out wordt gebruikt
+ontwikkeling uiteindelijk niet van belang. Daarvoor worden er door IDEs of build systemen vaak twee folders aangemaakt
+bij het creëren van een nieuw project: out/build en src/app. Src (of app) wordt gebruikt voor de ontwikkeling, de out wordt gebruikt
 voor de binaries. De volgende commando kan vanuit de command line worden uitgevoerd om de output naar een andere
 directory te schrijven.
 
@@ -126,7 +136,7 @@ het project. Aanpassingen aan bibliotheken, taken of tests kunnen allemaal via d
 
 ## 1.1 Gradle integratie <a name="gradle"></a>
 
-Om te kijken hoe build systemen over het algemeen werken onderzoeken we als voorbeeld Gradle, een build systeem die
+Om te kijken hoe build systemen over het algemeen werken onderzoeken we als voorbeeld Gradle[2][3], een build systeem die
 veelal wordt gebruikt in Java projecten en standaard is geintegreerd bij Android projecten. Gradle geeft een goed beeld
 hoe build systemen werken en wat de mogelijkheden zijn. Om Gradle te integreren moet eerst Gradle geinstalleerd worden.
 Wanneer Gradle is geinstalleerd kan er een Java project worden opgezet via het volgende shell commando:
@@ -203,7 +213,7 @@ Er zijn veel verschillende soorten build systemen, build systemen zijn toegespit
 kan bijvoorbeeld overweg met Java, C++ en Kotlin, maar Maven werkt niet met C++ projecten. De web applicaties maken vaak
 gebruik van build systemen zoals npm of Yarn. npm wordt verder toegelicht in het volgende hoofdstuk. Build systemen voor
 Java zijn verschillend en hebben verschillende voordelen en nadelen. Er zijn een aantal build systemen die
-voornamelijk worden gebruikt voor Java: 
+voornamelijk worden gebruikt voor Java[3]: 
 * Ant
 * Maven 
 * Buildr
@@ -321,7 +331,7 @@ het project groeit.
 
 ## 1.3 npm <a name="npm"></a>
 
-npm (**N**ode **P**ackage **M**anager) is een package manager. npm is net zoals Gradle een command line tool.
+npm (**N**ode **P**ackage **M**anager) is een package manager[10]. npm is net zoals Gradle een command line tool.
 Bibliotheken kunnen worden toegevoegd, verwijderd en worden opgewaardeerd. npm kan met het volgende commando aan het
 project toegevoegd worden:
 
@@ -381,15 +391,15 @@ deze folder bevat alle geinstalleerde pakketten uitgezonderd van globale pakkett
 
 ## 1.4 Webpack <a name="webpack"></a>
 
-Webpack is een tool om JavaScript bestanden te kunnen bundelen. Bundelen wil zeggen dat de JavaScript code van het
+Webpack is een tool om JavaScript bestanden te kunnen bundelen[4]. Bundelen wil zeggen dat de JavaScript code van het
 project zo compact mogelijk wordt samengevoegd. Het bundelen van JavaScript bestanden heeft
 meerdere voordelen:
 * Prestaties verbeteren.
 * Minify (Ruimte besparen).
 * Uglify (code slechter leesbaar maken voor de buitenwereld).
 
-Webpack kan via npm geinstalleerd worden als een development dependency, webpack kan gebruikt worden d.m.v. NPX (Node
-		package runner). NPX is een tool van npm om binaries te kunnen runnen. Om webpack te start moet het volgende commando
+Webpack kan via npm geinstalleerd worden als een development dependency, Webpack kan gebruikt worden d.m.v. NPX (Node
+package runner). NPX is een tool van npm om binaries te kunnen runnen. Om webpack te start moet het volgende commando
 uitgevoerd worden `npx webpack`. Deze zal de source code bundelen en een bestand main.js genereren in de
 dist(distribution) folder. 
 
@@ -441,7 +451,7 @@ afgevangen
 
 ## 2.1 Checkstyle <a name="checkstyle"></a>
 
-Checkstyle is een plugin die gebruikt wordt om de code consistentie/kwaliteit te verbeteren. Checkstyle kijkt of de code
+Checkstyle is een plugin die gebruikt wordt om de code consistentie/kwaliteit te verbeteren[5]. Checkstyle kijkt of de code
 conventies worden nageleeft. Er zijn verschillende code conventies mogelijk, sommige development teams prefereren om de
 accolade ({) op de bovenste regel te hanteren i.p.v. op de volgende regel. Deze regels
 worden vastgelegd binnen een xml bestand. 
@@ -537,7 +547,7 @@ standaard voor zorgen de het project wel of niet gebuild kan worden als checksty
 
 ## 2.2 FindBugs <a name="findbugs"></a>
 
-FindBugs is een tool die gebruikt wordt om veel voorkomende bugs te herkennen. Findbugs support geen Java versies boven
+FindBugs is een tool die gebruikt wordt om veel voorkomende bugs te herkennen[6]. Findbugs support geen Java versies boven
 1.8 in tegenstelling tot SpotBugs en moet de spirituele opvolger van FindBugs worden. Aangezien SpotBugs nog in
 ontwikkeling is wordt Findbugs onderzocht. FindBugs kan via Gradle of IDEs zoals Intellij IDEA worden geintegreerd als
 plugin. FindBugs is afhankelijk van gecompileerde code dus zal altijd pas werken nadat Gradle het project gebuild heeft.
@@ -657,7 +667,7 @@ met eigen tools kunnen worden geanalyseerd.
 # 3. Continuous Integration <a name="ci"></a>
 
 Continuous integration of CI, is een ontwikkelingsproces waarbij ontwikkelaars vaak code integreren naar een gedeelde
-repository. Elke integratie zal door een automatische wasstraat van development tools en tests gaan. Dit zorgt ervoor
+repository. Elke integratie zal door een automatische wasstraat van development tools en tests gaan[8]. Dit zorgt ervoor
 dat code aan een bepaalde minimum norm moet voldoen om geaccepteerd te worden. Zo kan bijvoorbeeld een vereiste zijn dat
 code dat niet gebuild kan worden automatisch niet wordt geaccepteerd door de master en development branch. 
 
@@ -669,15 +679,13 @@ hanteren. In dit hoofdstuk zal Jenkins als continuous integration tool verder wo
 
 ## 3.1 Jenkins <a name="jenkins"></a>
 Jenkins is een continuous integration tool dat op een server draait en afhankelijk is van een versiebeheer systeem zoals
-Git of SVN. Jenkins kan gedownload worden als een war bestand een binary voor Java, of als een prepackaged
+Git of SVN [7]. Jenkins kan gedownload worden als een war bestand een binary voor Java, of als een prepackaged
 binary (voor bijvoorbeeld Ubuntu). Vervolgens kan deze war via de java-cli gestart worden met commando: `java -jar
 jenkins.war --httpPort=8090`. De keuze voor de HTTP port is aan de ontwikkelaar zelf. 
 
 De ontwikkelaar kan naar `http://localhost:8090` browsen om de setup wizard van Jenkins te doorlopen. Wanneer de
 installatie is voltooid zal de gebruiker doorverwezen worden naar een portaal. Binnen dit portaal kunnen alle
 instellingen voor jenkins geconfigureerd worden. 
-
-<img src="./resources/Integrate-In-Jenkins.png" alt="Jenkins process" style="width:200px;"/>
 
 ![Jenkins process](./resources/Integrate-In-Jenkins.png)
 
@@ -745,7 +753,7 @@ gaat.
 # 5. Apache JMeter <a name="jmeter"></a>
 ## 5.1 Introductie <a name="introduction"></a>
 JMeter is een tool om prestaties te meten van verscheidene diensten, maar werd voornamelijk gebruikt voor web
-applicaties of ftp applicaties. Tegenwoordig wordt het ook gebruikt voor functionele tests en database server tests.
+applicaties of ftp applicaties[9]. Tegenwoordig wordt het ook gebruikt voor functionele tests en database server tests.
 JMeter is ontwikkeld door Stefano Mazzocchi, een medewerker van de Apache software Foundation, en is open source. JMeter
 heeft de volgende functionaliteiten:
 * Testen van allerlei verschillende applicaties/servers/protocollen:
@@ -770,7 +778,7 @@ eigenschappen worden onderzocht:
 * Wat zijn de resultaten van aanroepen onder zware lading.
 * Reageert de server onder aanroepen die queries uitvoeren of een database.
 
-## 5.3 Test Server <a name="server"></a>
+## 5.3 Opzet test server <a name="server"></a>
 De server wordt opgezet in NodeJS. Express is een package die via NPM eenvoudig geinstalleerd kan worden en kan helpen
 om makkelijk calls toe te voegen en te configureren. Om verschillen te kunnen meten met JMeter zijn de volgende calls
 opgestelt:
@@ -887,7 +895,7 @@ app.get('/database', (req, res) => {
 })
 ```
 
-## 5.4 Opstartgids JMeter.
+## 5.4 Opstartgids JMeter <a name="startup"></a>
 JMeter kan zowel via command line als via GUI. Voor dit onderzoek wordt eerst via de GUI een testplan opgesteld, daarna
 zal er gekeken worden hoe dit via een command line geimplementeerd kan worden. Voor JMeter gaan de volgende tests
 uitgevoerd worden:
@@ -901,15 +909,17 @@ prestatie verminderen (en waarom dat gebeurd).
 
 **Stress tests** <br>
 Deze tests zijn bedoeld om de server te crashen. Door heel veel requests uit te voeren kunnen we erachter komen hoeveel
-requests de server aan kan.  
+requests bepaalde calls van de server aan kan, als het ware kan je met JMeter een DDoS aanval simuleren. Ook kan er
+bekeken worden of sommige calls indivudeel uitvallen of crashen.
 
 ![JMeter GUI](./resources/jmeter-screen.png)
 
-## 5.5 Performance tests.
+## 5.5 Performance tests <a name="performance"></a>
 1. **Toevoegen van Thread Groups.** <br>
 De JMeter GUI bevat twee menu's, de linker menu is om acties aan het test plan toe te voegen. Het rechter menu is om
-deze acties te configureren en de resultaten worden hier ook weergegeven. Om initieel de server te testen wordt er een
-"Thread Group" toegevoegd. Deze thread group start de threads die aanroepen gaan doen op server. 
+deze acties te configureren en de resultaten van het testplan te bekijken. Acties kunnen zowel aanroepen zijn als
+"tools" om resultaten weer te geven. Om de server te testen wordt er een actie "Thread Group" toegevoegd. Deze Thread
+Group configureerd de threads die de aanroepen gaan doen naar de server. 
 
 2. **Toevoegen van een HTTP request.** <br>
 Voor performance tests worden de aanroepen apart getest. Deze HTTP request zullen eerst de 'calculations' pad testen.
@@ -923,7 +933,6 @@ Om de resultaten goed te kunnen analyseren worden er drie acties toegevoegd:
 	   data is er ontvangen? Hoeveel procent is er gefaald? De tabellen hieronder maken gebruik van deze actie.
 	3. Graph results. Deze actie geeft de resultaten weer in een grafiek over een horizontale tijdsas.
 
-### 5.5.1 Resultaten performance tests.
 **Threads:** 5 <br>
 **Duur:** 5 seconden <br>
 **Aantal:** 5 maal <br>
@@ -1070,7 +1079,7 @@ De insert aanroep wordt gebruikt om te kijken hoe lang deze aanroep ongeveer duu
 Deze aan roep is minder zwaar dan de vorige, maar dat heeft grotendeels ook te maken met kwantiteit. De vorige aanroep
 genereerde een array met 150 objecten, deze aanroep voegt maar 1 object toe aan de database.
 
-## 5.6 Resultaten load tests
+## 5.6 load tests <a name="load"></a> 
 **Threads:** 100 <br>
 **Duur:** 10 seconden <br>
 **Aantal:** 50 maal <br>
@@ -1225,7 +1234,7 @@ deze test die als load test had moeten dienen is dus eigenlijk een stress test g
 zal de ontwikkelaar de test omlaag schalen totdat de deviatie weer op 0 komt te staan. In het begin loopt de groene
 lijn op, dit is te vergelijken met de resultaten van het begin van een DDOS aanval.
 
-## 5.6 Resultaten stress tests
+## 5.7 Stress tests <a name="stress"></a>
 **Threads:** 1000 <br>
 **Duur:** 10 seconden <br>
 **Aantal:** 5 maal <br>
@@ -1238,11 +1247,25 @@ out of memory exceptions te gooien. Helaas heb ik daardoor niet de resultaten ku
 maken met het feit dat deze server op localhost draait. Wanneer de server extern zal draaien kunnen deze testen beter
 worden uitgevoerd.
 
-## 5.7 Conclusie
-JMeter bied alle opties 
+## 5.8 Conclusie <a name="conclusion"></a>
+Met de drie verschillende testen: prestatie, load, en stress zijn duidelijke verschillen naar voren gekomen. JMeter bied
+opties om deze testen makkelijk te kunnen simuleren. Via de ThreadGroup kunnen er eenvoudige gebruikers gesimuleerd
+worden. Bij grote applicaties kunnen de verschillende calls apart getest worden, JMeter zou goed in de Jenkins
+pipeline passen. Als eis zou je kunnen afspreken dat elke aanroep binnen x aantal milliseconden response moet geven en
+dat er geen deviatie op mag treden. 
 
-# Bronnen
+JMeter is een tool die ik zeker zou kunnen aanraden, het is makkelijk te gebruiken en kan veel voordeel opleveren m.b.t.
+stabiliteit van de code. Er zijn verscheidene acties mogelijk die niet gebruikt zijn tijdens dit onderzoek, deze acties
+kunnen weer andere belangen dienen.
 
-https://codeship.com/continuous-integration-essentials
-https://stackoverflow.com/questions/1306579/buildr-gradle-or-wait-for-maven-3
-https://jmeter.apache.org/
+# 6. Bronnen <a name="sources"></a>
+* [1]"webpack", Webpack.js.org, 2018. [Online]. Available: https://webpack.js.org/. [Accessed: 27- Aug- 2018] 
+* [2]G. Buildr, "Buildr, Gradle or wait for Maven 3?", Stack Overflow, 2018. [Online]. Available: https://stackoverflow.com/questions/1306579/buildr-gradle-or-wait-for-maven-3. [Accessed: 31- Aug- 2018] 
+* [3]G. Plugins, M. Gradle, M. Resources and T. Enterprise, "Gradle Build Tool", Gradle, 2018. [Online]. Available: https://gradle.org/. [Accessed: 31- Aug- 2018] <br>
+* [4]"webpack", Webpack.js.org, 2018. [Online]. Available: https://webpack.js.org/. [Accessed: 31- Aug- 2018] <br>
+* [5]"Checkstyle", En.wikipedia.org, 2018. [Online]. Available: https://en.wikipedia.org/wiki/Checkstyle. [Accessed: 31- Aug- 2018] <br>
+* [6]"FindBugs™ - Find Bugs in Java Programs", Findbugs.sourceforge.net, 2018. [Online]. Available: http://findbugs.sourceforge.net/. [Accessed: 31- Aug- 2018] <br>
+* [7]"Jenkins", Jenkins, 2018. [Online]. Available: https://jenkins.io/. [Accessed: 28- Aug- 2018] <br>
+* [8]C. Inc., "Continuous Integration: What is CI? Testing, Software & Process Tutorial", Continuous Integration Essentials | Codeship, 2018. [Online]. Available: https://codeship.com/continuous-integration-essentials. [Accessed: 23- Aug- 2018] <br>
+* [9]"Apache JMeter - Apache JMeter™", Jmeter.apache.org, 2018. [Online]. Available: https://jmeter.apache.org/. [Accessed: 30- Aug- 2018] <br>
+* [10]"npm", Npmjs.com, 2018. [Online]. Available: https://www.npmjs.com/. [Accessed: 23- Aug- 2018] <br>

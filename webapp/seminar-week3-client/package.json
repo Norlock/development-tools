@@ -1,0 +1,35 @@
+{
+  "name": "seminar-week3-client",
+  "version": "1.0.0",
+  "description": "seminar client",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no A test specified\" && exit 1",
+    "babel": "npx babel src -o dist/babel.js",
+    "sass": "npx node-sass -o dist src/styles/appStyle.scss",
+    "build:prod": "webpack --config webpack.config.js --mode production",
+    "start:dev": "webpack-dev-server"
+  },
+  "author": "Joris Willems",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-lodash": "^3.3.4",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.6.0",
+    "file-loader": "^2.0.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.19.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  }
+}

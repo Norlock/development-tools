@@ -1,0 +1,35 @@
+{
+  "name": "server-week4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "casperjs": "^1.1.4",
+    "eslint": "^5.6.0",
+    "eslint-config-google": "^0.10.0",
+    "jsdoc": "^3.5.5",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
+  },
+  "scripts": {
+    "mocha": "mocha test/todoTest.js",
+    "casper": "casperjs test test/browserTest.js --verbose",
+    "test": "npm run mocha; npm run casper",
+    "test:report": "npm run mocha -R html",
+    "test:coverage": "nyc npm run mocha; npm run casper",
+    "test:coverage-html": "nyc -r html npm run mocha",
+    "start": "node src/server.js",
+    "lint": "eslint src test",
+    "lint:fix": "eslint ./src ./test --fix",
+    "jsdoc": "jsdoc ./src",
+    "prebuild": "rm -rf out; mkdir out",
+    "build": "npm run lint; npm run test:coverage; npm run jsdoc; npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}

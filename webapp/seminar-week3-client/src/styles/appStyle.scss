@@ -1,0 +1,25 @@
+@import "themeColors";
+$theme-font: verdana, sans-serif;
+
+body {
+  font: $theme-font;
+
+  background-color: $themeColor-Light;
+
+  h1, h2 {
+      color: $themeColor-Dark
+  }
+
+	#todo-list > li {
+		line-height: 30px;
+	}
+
+  i.delete {
+    background: url(../images/delete.png);
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+  }
+}

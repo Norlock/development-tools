@@ -42,7 +42,6 @@ module.exports = (env, argv) => {
             minimizer: [new UglifyJsPlugin()]
         };
     }
-    console.log(config.optimization.minimizer);
 
     return config;
 };

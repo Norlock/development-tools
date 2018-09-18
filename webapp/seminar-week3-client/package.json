@@ -7,7 +7,7 @@
     "test": "echo \"Error: no A test specified\" && exit 1",
     "babel": "npx babel src -o dist/babel.js",
     "sass": "npx node-sass -o dist src/styles/appStyle.scss",
-    "build:prod": "webpack --config webpack.config.js --mode production",
+    "build:prod": "webpack --mode production",
     "start:dev": "webpack-dev-server"
   },
   "author": "Joris Willems",

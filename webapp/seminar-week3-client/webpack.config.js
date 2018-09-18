@@ -1,29 +1,36 @@
-const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: ['./src/app.js'],
+  entry: path.resolve(__dirname, 'src', 'app.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.js'
   },
+  resolve: {
+    extensions: ['.js']
+  },
   module: {
-	rules: [{
-	  test: /\.(png|jpg|gif|scss|js)$/,
-	  exclude: /(node_modules|bower_components)/,
-	  use: [{
-		loader: "css-loader", // translates CSS into CommonJS
-	  }, {
-		loader: "sass-loader", // compiles Sass to CSS, using Node Sass by default
-	  }, {
-		loader: "file-loader",
-	  }, {
-		loader: "babel-loader",
-        query: {
-          plugins: ['lodash'],
-          presets: [['@babel/preset-env', { 'targets': { 'node': 6 } }]]
-        }
-	  }]
-	}]
+      rules: [
+          {
+              test: /\.jsx/,
+              use: {
+                  loader: 'babel-loader',
+                  options: { presets: ['react', 'es2015'] }
+              }
+          },
+          {
+              test: /\.scss/,
+              use: ['style-loader', 'css-loader', 'sass-loader']
+          },
+          {
+              test: /\.(png|jpg|gif)$/,
+              use: [
+                  {
+                      loader: 'file-loader',
+                      options: {}
+                  }
+              ]
+          }
+      ]
   }
 };

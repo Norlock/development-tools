@@ -1,49 +1,49 @@
-<style>
-	#img-main-page {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		width: 40%;
-	}
+<!--<style>-->
+	<!--#img-main-page {-->
+		<!--display: block;-->
+		<!--margin-left: auto;-->
+		<!--margin-right: auto;-->
+		<!--width: 40%;-->
+	<!--}-->
 
-	#title {
-		color: #222;
-		display:block;
-		width: 100%;
-		text-align: center;
-		font-size: 36px;
-	}
+	<!--#title {-->
+		<!--color: #222;-->
+		<!--display:block;-->
+		<!--width: 100%;-->
+		<!--text-align: center;-->
+		<!--font-size: 36px;-->
+	<!--}-->
 
-	#sub-title {
-		color: #333;
-		display:block;
-		width: 100%;
-		text-align: center;
-		font-size: 26px;
-	}
+	<!--#sub-title {-->
+		<!--color: #333;-->
+		<!--display:block;-->
+		<!--width: 100%;-->
+		<!--text-align: center;-->
+		<!--font-size: 26px;-->
+	<!--}-->
 
-	#error-report {
-		font-size: 100%;
-		font-weight: bold;
-		background: #525D76;
-		color: white;
-		text-decoration: none;
-		padding: 5px;
-		margin-right: 2px;
-		margin-left: 2px;
-		margin-bottom: 0;
-	}
+	<!--#error-report {-->
+		<!--font-size: 100%;-->
+		<!--font-weight: bold;-->
+		<!--background: #525D76;-->
+		<!--color: white;-->
+		<!--text-decoration: none;-->
+		<!--padding: 5px;-->
+		<!--margin-right: 2px;-->
+		<!--margin-left: 2px;-->
+		<!--margin-bottom: 0;-->
+	<!--}-->
 
-	.log {
-		margin-top: 0;
-	}
+	<!--.log {-->
+		<!--margin-top: 0;-->
+	<!--}-->
 
-	.el_method {
-		pointer-events: none;
-	}
-</style>
+	<!--.el_method {-->
+		<!--pointer-events: none;-->
+	<!--}-->
+<!--</style>-->
 
-<span id="title">Development Tools</span>
+#Development Tools
 
 <br>
 

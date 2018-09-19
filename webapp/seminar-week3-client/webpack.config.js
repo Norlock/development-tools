@@ -38,10 +38,10 @@ var config = {
 
 module.exports = (env, argv) => {
     if(argv.mode === 'development') {
-        config.optimization = {
-            minimizer: [new UglifyJsPlugin()]
-        };
+        config.plugins = [new UglifyJsPlugin({sourceMap: true})]
+    } else if (argv.mode === 'production') {
+        config.plugins = []    
     }
-
+    console.log('config', config);
     return config;
 };

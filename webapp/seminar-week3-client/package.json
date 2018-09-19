@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no A test specified\" && exit 1",
-    "babel": "npx babel src -o dist/babel.js",
-    "sass": "npx node-sass -o dist src/styles/appStyle.scss",
+    "babel": "babel src -o dist/babel.js",
+    "sass": "node-sass -o dist src/styles/appStyle.scss",
     "build:prod": "webpack --mode=production",
     "build": "webpack --mode=development",
     "start:dev": "webpack-dev-server --mode=development"

@@ -436,7 +436,6 @@ Door het uitvoeren van dit commando zal een HTML bestand worden gegenereerd binn
 bestand zal weergeven waar de regels zijn over treden. Voorbeeld van foutmeldingen van een Checkstyle run die Sun
 rules gebruikt:
 
-<h3 id="error-report">File /home/norlock/Projects/developmentTools/MyFirstApplication/src/main/java/MyFirstApplication.java</h3>
 <table class="log" width="100%" cellspacing="2" cellpadding="5" border="0">
 <tbody><tr>
 <th>Error Description</th><th>Line</th>
